@@ -76,6 +76,18 @@ class Mobius(object):
             (top_left + top_right) / bottom,
             (top_left - top_right) / bottom)
 
+    def __mul__(self, other):
+        """
+        Multiply matricies together to compose mobius transformations
+        [a b] * [e f] = [ae + bg  af + bh]
+        [c d]   [g h]   [ce + dg  cf + dh]
+        """
+        a = self.a * other.a + self.b * other.c
+        b = self.a * other.b + self.b * other.d
+        c = self.c * other.a + self.d * other.c
+        d = self.c * other.b + self.d * other.d
+        return Mobius(a, b, c, d)
+
     @property
     def from_one(self):
         """
@@ -160,6 +172,35 @@ class Mobius(object):
         tr M = a + d
         """
         return self.a + self.d
+
+    @property
+    def T(self):
+        """
+        Compute the transpose of the matrix as a new Mobius object.
+
+        M^T = Ry(pi) * M^-1 * Ry(pi)^-1
+        where Ry(pi)(z) = -1/z, a 180 degree rotation of the riemann sphere
+            about the +y axis
+
+        Note that Ry(pi)^-1 = Ry(pi)
+        """
+        return Mobius(self.a, self.c, self.b, self.d)
+
+    @property
+    def conj(self):
+        """
+        Compute the conjugate of the matrix. This is the same
+        as conjugating by the map X(z) = z.conj
+
+        M.conj = X * M * X^-1
+
+        Note that X = X^-1
+        """
+        return Mobius(
+            self.a.conjugate(),
+            self.b.conjugate(),
+            self.c.conjugate(),
+            self.d.conjugate())
 
     @property
     def classify(self):

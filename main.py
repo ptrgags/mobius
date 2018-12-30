@@ -1,17 +1,22 @@
 #!/usr/bin/env python
 from mobius_xform import Mobius
+from cline import Cline
 
 def main():
-    a = Mobius(1, 0, 0, 1)
-    b = Mobius(1j, 2, 2j, 1)
+    # unit circle
+    C = Cline.from_circle(0, 1)
 
-    A = a.inv
-    B = b.inv
+    # Translate 2 to the right
+    M = Mobius(1, 2, 0, 1)
 
-    print('a', a, a.classify)
-    print('A', A, A.classify)
-    print('b', b, b.classify)
-    print('B', B, b.classify)
+    C2 = C.transform(M)
+
+    print(C)
+    print(C.params)
+    print(M)
+    print(C2)
+    print(C2.params)
+
 
 if __name__ == '__main__':
     main()
