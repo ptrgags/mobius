@@ -51,7 +51,6 @@ def grandmas_recipe(trace_a, trace_b, plus_root=True):
     z0_top = (trace_ab - 2) * trace_b
     z0_bottom = trace_b * trace_ab - 2 * trace_a + 2j * trace_ab
     z0 = z0_top / z0_bottom
-    print(z0)
 
     # Compute the coefficients of a
     A = trace_a / 2
@@ -67,13 +66,8 @@ def grandmas_recipe(trace_a, trace_b, plus_root=True):
     D = (trace_b + 2j) / 2
     b = Mobius(A, B, C, D)
 
-    print(a)
-    print(b)
-
     # Finally, return it as a group
     return make_group(a, b)
-
-
 
 # The Glowing Gasket of Chapter 7 fame
 apollonian_gasket = make_group(
