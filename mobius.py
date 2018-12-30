@@ -88,6 +88,15 @@ class Mobius(object):
         d = self.c * other.b + self.d * other.d
         return Mobius(a, b, c, d)
 
+    def conjugate_by(self, other):
+        """
+        If this transform is T and the other is M,
+        then the conjugated transform T' = MTM^(-1)
+        THis is useful for getting a different view of the riemann sphere
+        while applying the same transformation
+        """
+        return other * self * other.inv
+
     @property
     def from_one(self):
         """

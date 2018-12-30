@@ -1,5 +1,5 @@
 import cmath
-from mobius_xform import Mobius
+from mobius import Mobius
 
 class Cline(object):
     """
@@ -19,7 +19,7 @@ class Cline(object):
     A is any real number
     B = -A * center.conj
     C = -A * center = B.conj
-    D = A * center * center.conj - r^2
+    D = A * center * center.conj - A * r^2
     """
     def __init__(self, a, b, c, d):
         self.a = complex(a)
@@ -100,7 +100,7 @@ class Cline(object):
             if disc.real < 0:
                 return 'line'
             elif disc.real == 0:
-                # Not a circle. Not sure
+                # Not a circle or line. Not sure
                 return 'not_circle'
             else:
                 return 'invalid'
@@ -109,28 +109,40 @@ class Cline(object):
     def params(self):
         """
         If this is a circle, return ('circle', center, radius)
+            |z - center| = radius
         If this is a point, return ('point', center)
-        If this is a line, return ('line', start, end)
+        If this is a line, return ('line', A, B, C)
+            Ax + By = C
         If this is an imaginary circle, return ('imag_circle', center, radius)
-        Otherwise, return ('not_circle', None) or ('impossible', None)
+            |z - center| = radius, radius is complex
+        Otherwise, return ('not_circle', None) or ('invalid', None)
         """
         cline_type = self.classify
         if cline_type == 'circle':
-            disc = self.discriminant
             center = -self.c / self.a
 
             # Compute the radius
+            disc = self.discriminant
             radius = cmath.sqrt(-disc / self.a)
-
             return ('circle', center, radius)
         elif cline_type == 'point':
-            raise NotImplementedError('point params')
+            center = -self.c / self.a
+            return ('point', center)
         elif cline_type == 'imag_circle':
             raise NotImplementedError('imag circle params')
         elif cline_type == 'line':
-            raise NotImplementedError('line params')
+            # These were derived as follows:
+            # C.conj * z + C * z.conj + D = 0
+            # 2 * Re(C.conj * z) = -D
+            # 2 * (C.real * x + C.imag * y) = -D
+            # C.real * x + C.imag * Y = -D / 2
+            # which is in the form Ax + By = C
+            A = self.c.real
+            B = self.c.imag
+            C = -self.d / 2.0
+            return ('line', A, B, C)
         else:
-            return (cline_type, None, None)
+            return (cline_type, None)
 
     @classmethod
     def from_circle(cls, center, radius):

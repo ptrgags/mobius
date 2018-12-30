@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-from mobius_xform import Mobius
+from mobius import Mobius
 from cline import Cline
 
 def main():
