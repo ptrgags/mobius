@@ -230,3 +230,26 @@ class Mobius(object):
             return 'elliptic'
         else:
             return 'parabolic'
+
+    @property
+    def to_flame(self):
+        """
+        Format a XML line for use in Apophysis/Chaotica
+        """
+        attributes = {
+            'weight': 0.5,
+            'color': 0,
+            'mobius': 1,
+            'coefs': '1 0 0 1 0 0',
+            'Re_A': self.a.real,
+            'Im_A': self.a.imag,
+            'Re_B': self.b.real,
+            'Im_B': self.b.imag,
+            'Re_C': self.c.real,
+            'Im_C': self.c.imag,
+            'Re_D': self.d.real,
+            'Im_D': self.d.imag,
+            'opacity': 1,
+        }
+        attrs = ['{}="{}"'.format(key, val) for key, val in attributes.items()]
+        return "<xform {} />".format(" ".join(attrs))

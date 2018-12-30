@@ -2,6 +2,8 @@
 from mobius import Mobius
 from cline import Cline
 import mobius_recipes
+import group_recipes
+from flame import Flame, FlamePack
 
 def main():
     # unit circle
@@ -15,6 +17,13 @@ def main():
     print(K)
     print(C2)
     print(C2.params)
+
+    flames = [
+        Flame('ApollonianGasket', group_recipes.apollonian_gasket)
+    ]
+    flame_pack = FlamePack('MobiusTest', flames)
+    flame_pack.save('test.flame')
+
 
 if __name__ == '__main__':
     main()
