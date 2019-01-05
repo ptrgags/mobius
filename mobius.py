@@ -1,4 +1,5 @@
 import cmath
+import random
 from enum import Enum
 
 class Mobius(object):
@@ -238,7 +239,7 @@ class Mobius(object):
         """
         attributes = {
             'weight': 0.5,
-            'color': 0,
+            'color': random.random(),
             'mobius': 1,
             'coefs': '1 0 0 1 0 0',
             'Re_A': self.a.real,

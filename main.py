@@ -46,14 +46,18 @@ TEXTBOOK_EXAMPLES = FlamePack('TextbookExamples', [
 def main():
     f_a = const_curve(2)
     f_b = lambda t: 2 - 2 * t
-    steps = 50
+    steps = 100
     vals = list(explore_trace_space(f_a, f_b, steps))
     palette = Palette.random()
+    zoom = 1.0
+    size = "500 500"
     flames = [
         Flame(
             'Spirals_{}'.format(i),
             group_recipes.grandmas_recipe(t_a, t_b, False),
-            palette)
+            palette=palette,
+            zoom=zoom,
+            size=size)
         for i, (t_a, t_b) in enumerate(vals)]
     pack = FlamePack('Spirals', flames)
     pack.save('output/spirals.flame')

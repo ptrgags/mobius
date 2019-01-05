@@ -88,12 +88,13 @@ class Flame(object):
     Class that represents a single flame fractal for
     Apophysis/Chaotica
     """
-    def __init__(self, name, xforms, palette=None, size="1500 2100"):
+    def __init__(self, name, xforms, palette=None, zoom=1.0, size="1500 2100"):
         self.name = name
         self.xforms = xforms
         self.palette = palette or Palette.random()
         self.xforms = xforms
         self.size = size
+        self.zoom = zoom
 
     @property
     def xform_lines(self):
@@ -132,10 +133,25 @@ class Flame(object):
                 "0 0 1 0 0 1 1 1 1 1 1 1 0 0 1 0 0 1 1 1 1 1 1 1 0 0 1 0 "
                 "0 1 1 1 1 1 1 1 0 0 1 0 0 1 1 1 1 1 1 1"))
 
+        # Format the neededtransformations
         xform_lines = prefix_lines('   ', self.xform_lines)
+
+        # Final transform for quick zooming
+        zoom_tag = render_tag(
+            'finalxform',
+            close_tag=True,
+            color='0',
+            symmetry='1',
+            linear=self.zoom,
+            coefs="1 0 0 1 0 0")
+
+        # Palettes and the end tag
         palette_lines = prefix_lines('   ', self.palette.lines)
         end_tag = '</flame>'
-        return [start_tag] + xform_lines + palette_lines + [end_tag]
+
+        # Combine all the lines into one big list
+        return (
+            [start_tag] + xform_lines + [zoom_tag] + palette_lines + [end_tag])
 
 class FlamePack(object):
     """
