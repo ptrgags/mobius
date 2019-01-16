@@ -43,13 +43,32 @@ TEXTBOOK_EXAMPLES = FlamePack('TextbookExamples', [
         1.887 + .05j, 2, False))
 ])
 
-def main():
+def gasket_explosion():
     f_a = const_curve(2)
     f_b = lambda t: 2 - 2 * t
     steps = 100
     vals = list(explore_trace_space(f_a, f_b, steps))
     palette = Palette.random()
     zoom = 1.0
+    size = "500 500"
+    flames = [
+        Flame(
+            'Gasket_{}'.format(i),
+            group_recipes.grandmas_recipe(t_a, t_b, False),
+            palette=palette,
+            zoom=zoom,
+            size=size)
+        for i, (t_a, t_b) in enumerate(vals)]
+    pack = FlamePack('GasketExplosion', flames)
+    pack.save('output/gasket_explosion.flame')
+
+def main():
+    f_a = lambda t: 2 - 2 * t
+    f_b = lambda t: 2 + 1j - t * 1j
+    steps = 100
+    vals = list(explore_trace_space(f_a, f_b, steps))
+    palette = Palette.random()
+    zoom = 0.5
     size = "500 500"
     flames = [
         Flame(
