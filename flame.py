@@ -58,14 +58,12 @@ class Palette(object):
         return [start_tag] + prefix_lines('   ', color_lines) + [end_tag]
 
     @classmethod
-    def rand_component(cls, t):
+    def rand_component(cls, t, c, d):
         """
         Compute a single color in a random cosine palette
         """
         a = 0.5
         b = 0.5
-        c = random.randint(0, 5)
-        d = random.random()
         val = a + b * math.cos(2.0 * math.pi * (c * t + d))
         return int(val * 255)
 
@@ -75,11 +73,18 @@ class Palette(object):
         Return a random cosine palette
         """
         pal = []
+
+        red_c = random.randint(0, 5)
+        red_d = random.random()
+        green_c = random.randint(0, 5)
+        green_d = random.random()
+        blue_c = random.randint(0, 5)
+        blue_d = random.random()
         for i in range(cls.TOTAL_COLORS):
             t = i / cls.TOTAL_COLORS
-            r = cls.rand_component(t)
-            g = cls.rand_component(t)
-            b = cls.rand_component(t)
+            r = cls.rand_component(t, red_c, red_d)
+            g = cls.rand_component(t, green_c, green_d)
+            b = cls.rand_component(t, blue_c, blue_d)
             pal.append((r, g, b))
         return cls(pal)
 
