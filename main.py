@@ -4,6 +4,10 @@ from cline import Cline
 import mobius_recipes
 import group_recipes
 from flame import Flame, FlamePack, Palette
+import animation
+
+# I want these curves easily accessible
+from parametric import *
 
 def const_curve(val):
     """
@@ -62,7 +66,7 @@ def gasket_explosion():
     pack = FlamePack('GasketExplosion', flames)
     pack.save('output/gasket_explosion.flame')
 
-def main():
+def still_not_spirals():
     f_a = lambda t: 2 - 2 * t
     f_b = lambda t: 2 + 1j - t * 1j
     steps = 100
@@ -80,6 +84,23 @@ def main():
         for i, (t_a, t_b) in enumerate(vals)]
     pack = FlamePack('Spirals', flames)
     pack.save('output/spirals.flame')
+
+def gasket_explosion():
+    """
+    Use with GrandmasAnimation
+    """
+    return {
+        'num_frames': 200,
+        'palette': Palette.random(),
+        'zoom_curve': ConstCurve(1.0),
+        'trace_a_curve': ConstCurve(2.0),
+        'plus_root': False,
+        'trace_b_curve': LoopedCurve(LineSegment(2.0, 0.01))
+    }
+
+def main():
+    anim = animation.GrandmasAnimation(**gasket_explosion())
+    anim.make_animation('GasketExplosion', 'output/gasket_explosion.flame') 
 
 if __name__ == '__main__':
     main()

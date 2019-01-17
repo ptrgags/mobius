@@ -106,7 +106,11 @@ class Flame(object):
         """
         Render each xforms to XML
         """
-        return [xform.to_flame for xform in self.xforms]
+        N = len(self.xforms)
+        return [
+            # Evenly space the color along the palette
+            xform.to_flame(i/(N + 1)) 
+            for i, xform in enumerate(self.xforms)]
 
     @property
     def lines(self):

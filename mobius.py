@@ -232,14 +232,13 @@ class Mobius(object):
         else:
             return 'parabolic'
 
-    @property
-    def to_flame(self):
+    def to_flame(self, color=0.0):
         """
         Format a XML line for use in Apophysis/Chaotica
         """
         attributes = {
             'weight': 0.5,
-            'color': random.random(),
+            'color': color,
             'mobius': 1,
             'coefs': '1 0 0 1 0 0',
             'Re_A': self.a.real,
