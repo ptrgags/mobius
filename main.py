@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+import sys
+
 from mobius import Mobius
 from cline import Cline
 import mobius_recipes
@@ -8,6 +10,7 @@ import animation
 
 # I want these curves easily accessible
 from parametric import *
+import param_parser
 
 def const_curve(val):
     """
@@ -92,15 +95,21 @@ def gasket_explosion():
     return {
         'num_frames': 200,
         'palette': Palette.random(),
-        'zoom_curve': ConstCurve(1.0),
-        'trace_a_curve': ConstCurve(2.0),
+        'curve_zoom': ConstCurve(1.0),
+        'curve_trace_a': ConstCurve(2.0),
         'plus_root': False,
-        'trace_b_curve': LoopedCurve(LineSegment(2.0, 0.01))
+        'curve_trace_b': LoopedCurve(LineSegment(2.0, 0.01))
     }
 
-def main():
+def old_main():
     anim = animation.GrandmasAnimation(**gasket_explosion())
     anim.make_animation('GasketExplosion', 'output/gasket_explosion.flame') 
+
+def main():
+    fname = sys.argv[1]
+    parser = param_parser.ParamParser(fname) 
+    parser.make_animation()
+    
 
 if __name__ == '__main__':
     main()

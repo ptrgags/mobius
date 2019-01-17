@@ -1,0 +1,13 @@
+{
+    "pack_name": "GasketExplosion",
+    "fname": "gasket_explosion.flame",
+    "animator": "grandma",
+    "params": {
+        "num_frames": 200,
+        "palette": "random",
+        "curve_zoom": 1.0,
+        "curve_trace_a": 2.0,
+        "curve_trace_b": ["loop", ["line", 2.0, 0.01]],
+        "plus_root": false
+    }
+}
