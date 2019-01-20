@@ -1,0 +1,13 @@
+{
+    "pack_name": "CircleTest",
+    "fname": "circle_test.flame",
+    "animator": "grandma",
+    "params": {
+        "num_frames": 200,
+        "palette": "random",
+        "curve_zoom": 0.5,
+        "curve_trace_a": 2.0,
+        "curve_trace_b": ["circle", 2.0, 1.0, 3.1415, 1.0],
+        "plus_root": false
+    }
+}

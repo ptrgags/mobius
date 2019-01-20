@@ -2,6 +2,7 @@
 Utilities for defining parametric functions
 """
 import math
+import cmath
 
 class ParametricCurve(object):
     """
@@ -44,6 +45,22 @@ class LineSegment(ParametricCurve):
 
     def __call__(self, t):
         return (1.0 - t) * self.start + t * self.end
+
+class ParametricCircle(ParametricCurve):
+    """
+    Parametric circle
+
+    This always returns a complex number
+    """
+    def __init__(self, center, radius, theta0, frequency):
+        self.center = center
+        self.radius = radius
+        self.theta0 = theta0
+        self.freq = frequency
+
+    def __call__(self, t):
+        theta = 2 * cmath.pi * self.freq * t + self.theta0
+        return self.center + self.radius * cmath.exp(1j * theta)
 
 class CurveChain(ParametricCurve):
     """

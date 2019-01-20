@@ -51,12 +51,13 @@ class ParamParser(object):
 
     def make_curve(self, data):
         """
-        curve = const_float             -> ConstCurve (real)
-              | [real, imag]            -> ConstCurve (complex)
-              | ["loop", curve]         -> LoopedCurve
-              | ["reverse", curve]      -> ReverseCurve
-              | ["chain", curves...]    -> CurveChain
-              | ["line", start, stop]   -> LineSegment
+        curve = const_float                        -> ConstCurve (real)
+              | [real, imag]                       -> ConstCurve (complex)
+              | ["loop", curve]                    -> LoopedCurve
+              | ["reverse", curve]                 -> ReverseCurve
+              | ["chain", curves...]               -> CurveChain
+              | ["line", start, stop]              -> LineSegment
+              | ["circle", center, radius, theta0] -> ParametricCircle 
         """
         # Simple case: we have a real number which represents a constant curve
         if isinstance(data, float):
@@ -82,8 +83,18 @@ class ParamParser(object):
             start = self.parse_complex(start_val)
             end = self.parse_complex(end_val)
             return parametric.LineSegment(start, end)
+        elif curve_type == 'circle':
+            return self.parse_circle(args)
         else:
             raise ValueError("{} is not a valid curve!".format(data))
+
+    def parse_circle(self, args):
+        """
+        Handle the arguments for a circle
+        """
+        center_coords, radius, theta0, freq = args
+        center = self.parse_complex(center_coords)
+        return parametric.ParametricCircle(center, radius, theta0, freq) 
 
     def parse_complex(self, data):
         """

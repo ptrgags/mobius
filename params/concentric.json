@@ -1,0 +1,13 @@
+{
+    "pack_name": "ConcentricCircles",
+    "fname": "concentric.flame",
+    "animator": "grandma",
+    "params": {
+        "num_frames": 200,
+        "palette": "random",
+        "curve_zoom": 0.5,
+        "curve_trace_a": ["circle", 0.0, 3.0, 0.0, 1.0],
+        "curve_trace_b": ["circle", 0.0, 2.1, 3.1415, 1.0],
+        "plus_root": false
+    }
+}

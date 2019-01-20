@@ -1,0 +1,13 @@
+{
+    "pack_name": "DisjointCircles",
+    "fname": "disjoint_circles.flame",
+    "animator": "grandma",
+    "params": {
+        "num_frames": 100,
+        "palette": "random",
+        "curve_zoom": 0.5,
+        "curve_trace_a": ["circle", 0.0, 0.5, 0.0, 0.5],
+        "curve_trace_b": ["circle", 2.0, 0.5, 0.0, 1.0],
+        "plus_root": false
+    }
+}
