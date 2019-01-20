@@ -46,19 +46,22 @@ class GrandmasAnimation(FractalAnimation):
 
     def make_flames(self):
         for i, zoom, trace_a, trace_b in self.animate_params():
-            flame_name = "frame_{}_zoom_{:.3f}_tr_a_{}_tr_b_{}".format(
+            flame_name = "frame_{:04}_zoom_{:.3f}_tr_a_{}_tr_b_{}".format(
                 i, 
                 zoom, 
                 self.format_complex(trace_a), 
                 self.format_complex(trace_b))
-            xforms = group_recipes.grandmas_recipe(
-                trace_a, trace_b, self.plus_root)
-            yield Flame(
-                flame_name,
-                xforms,
-                palette=self.palette,
-                zoom=zoom,
-                size=self.SIZE)
+            try:
+                xforms = group_recipes.grandmas_recipe(
+                    trace_a, trace_b, self.plus_root)
+                yield Flame(
+                    flame_name,
+                    xforms,
+                    palette=self.palette,
+                    zoom=zoom,
+                    size=self.SIZE)
+            except ZeroDivisionError as e:
+                print("Warning: skipping invalid frame {}".format(flame_name))
 
     def animate_params(self):
         """

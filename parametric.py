@@ -56,7 +56,13 @@ class CurveChain(ParametricCurve):
         n = len(self.funcs)
         func_index = int(math.floor(n * t))
         func_val = math.fmod(n * t, 1.0)
-        return self.funcs[func_index](func_val)
+
+        if t == 1.0:
+            # Technically this winds up in the (n + 1)-th bucket, 
+            # but really we want the end of the last bucket anyway
+            return self.funcs[-1](1.0)
+        else:
+            return self.funcs[func_index](func_val)
 
 class LoopedCurve(CurveChain):
     """

@@ -1,0 +1,18 @@
+{
+    "pack_name": "Diagonally",
+    "fname": "diagonally.flame",
+    "animator": "grandma",
+    "params": {
+        "num_frames": 200,
+        "palette": "random",
+        "curve_zoom": ["loop", ["chain", 
+            ["line", 0.1, 0.25],
+            ["line", 0.25, 0.5],
+            ["line", 0.5, 1.0],
+            ["line", 1.0, 5.0]
+        ]],
+        "curve_trace_a": 2.0,
+        "curve_trace_b": ["loop", ["line", [2.0, 2.0], 0.0]],
+        "plus_root": false
+    }
+}
