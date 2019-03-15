@@ -32,8 +32,8 @@ def main():
                 flames.append(flame)
             except ZeroDivisionError as e:
                 invalid_count += 1
-                print("Divide by zero at Ta = {}, Tb = {}".format(
-                    trace_a, trace_b))
+                print("Divide by zero at Ta = {}, Tb = {}, sum = {}, diff = {}".format(
+                    trace_a, trace_b, trace_a + trace_b, trace_a - trace_b))
     print("invalid count: {}".format(invalid_count))
 
     # generate one *very* big .flame file
