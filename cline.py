@@ -52,8 +52,6 @@ class Cline(object):
         M_inv_T = M_inv.T
         M_inv_conj = M_inv.conj
 
-        print(mobius, '::', M_inv, '::', M_inv_T, '::', M_inv_conj)
-
         # The Cline isn't actually a mobius transformation, but
         # it multiplies like one!
         C = Mobius(self.a, self.b, self.c, self.d)

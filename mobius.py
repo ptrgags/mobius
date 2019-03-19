@@ -141,6 +141,13 @@ class Mobius(object):
         return - self.d / self.c
 
     @property
+    def poles(self):
+        """
+        return (M(inf), M^-1(inf))
+        """
+        return (self.to_inf, self.from_inf)
+
+    @property
     def inv(self):
         """
         Find the inverse transformation:
