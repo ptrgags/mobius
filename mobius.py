@@ -1,6 +1,5 @@
 import cmath
 import random
-from enum import Enum
 
 class Mobius(object):
     """
