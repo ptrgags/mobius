@@ -2,6 +2,8 @@
 Recipes from the book Indra's Pearls by David Mumford et al.
 plus some of my own variations
 """
+import cmath
+
 from mobius import Mobius
 import basic_maps
 
@@ -140,3 +142,54 @@ def find_mobius_xform(p1, q1, r1, p2, q2, r2):
     S = cross_ratio_map(p1, q1, r1)
     T = cross_ratio_map(p2, q2, r2)
     return T.inv * S
+
+
+def centered_parabolic(translate_amount):
+    """
+    Create a parabolic mmobius transformation by taking a translation and
+    conjugating it by 1/z (rotating the Riemann sphere 180 degrees about the
+    real axis):
+
+    M = Rx(pi) * T(d) * Rx(pi)
+
+    where Rx(pi) is the 1/z transformation. T(d) is a translation by complex
+    number d.
+
+    The overall transformation has a simple formula:
+    [1  0]
+    [-d 1]
+    """
+    return Mobius(1, 0, -translate_amount, 1)
+
+def unit_spirals(k):
+    """
+    Create a loxodromic/hyperbolic/elliptic mobius transformation with
+    fixed points on the unit circle, specifically at -1 and 1. This is done
+    by taking the complex scaling transformation S(z) = kz and conjugating it
+    by a transformation that rotates the Riemann sphere so
+    0 -> -1 -> infinity -> 1 -> 0:
+
+    M = Ry(pi/2) * S(k) * Ry(pi/2)
+
+    The type of transformation depends on k:
+
+    For k real, |k| > 1, the transformation is hyperbolic
+    for k real, |k| < 1, the transformation is elliptic
+    if k is real, |k| = 1, the transformation is the identity
+        (technically parabolic)
+    oterwise (k complex) k is strictly loxodromic
+
+    The conjugated transformation has the formula:
+
+    [1/2 f(k)  1/2 g(k)]
+    [1/2 g(k)  1/2 f(k)]
+
+    (the 1/2 could be factored out, but they are needed to have determinant 1)
+
+    where f(k) = sqrt(k) + 1/sqrt(k)
+      and g(k) = sqrt(k) - 1/sqrt(k)
+    """
+    root_k = cmath.sqrt(k)
+    f = root_k + 1.0 / root_k
+    g = root_k - 1.0 / root_k
+    return Mobius(0.5 * f, 0.5 * g, 0.5 * g, 0.5 * f)
