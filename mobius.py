@@ -1,6 +1,5 @@
 import cmath
 import random
-from enum import Enum
 
 class Mobius(object):
     """
@@ -27,13 +26,30 @@ class Mobius(object):
         self.c = complex(c)
         self.d = complex(d)
 
+    def format_ac(self, a_or_c):
+        if a_or_c == 1.0:
+            return 'z'
+        elif a_or_c == 0:
+            return ''
+        else:
+            return "{}z".format(a_or_c)
+
+    def format_bd(self, b_or_d):
+        if b_or_d == 0.0:
+            return ''
+        else:
+            return str(b_or_d)
+
     def __repr__(self):
         """
         Format the mobius transform. Note that this displays 0s explicitly
         """
-        # TODO: Hide 0 values
-        return "({}z + {}) / ({}z + {})".format(
-            self.a, self.b, self.c, self.d)
+        top = [self.format_ac(self.a), self.format_bd(self.b)]
+        bottom = [self.format_ac(self.c), self.format_bd(self.d)]
+        top = " + ".join(x for x in top if x)
+        bottom = " + ".join(x for x in bottom if x)
+
+        return "({})/({})".format(top, bottom)
 
     def __call__(self, z):
         """
