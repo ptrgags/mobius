@@ -1,6 +1,16 @@
 import cmath
 import random
 
+def div_or_inf(a, b):
+    """
+    Division of two complex numbers a / b, except that if a ZeroDivisionError
+    is raised, this function returns complex infinity
+    """
+    try:
+        return a / b
+    except ZeroDivisionError:
+        return complex('inf')
+
 class Mobius(object):
     """
     Class that represents a Mobius map (a.k.a linear fractional transformation)
@@ -69,6 +79,8 @@ class Mobius(object):
 
         Fix M = ((a - d) +/- sqrt((Tr M)^2 - 4)) / (2 * c)
 
+        (From Indra's Pearls, Note 3.3)
+
         If there is only one fixed point, this method returns
         (Fix M, None)
 
@@ -81,17 +93,81 @@ class Mobius(object):
         bottom = 2 * self.c
         discriminant = self.tr ** 2 - 4
 
+        # TODO: Handle cases where c and/or d are 0
+
         # Only 1 fixed point if the discriminant is 0
         # (happens when the transformation is parabolic)
         if discriminant == 0:
-            return (top_left / bottom, None)
+            return (div_or_inf(top_left, bottom), None)
 
         # Otherwise, finish the quadratic formula
         top_right = cmath.sqrt(discriminant)
 
         return (
-            (top_left + top_right) / bottom,
-            (top_left - top_right) / bottom)
+            div_or_inf(top_left + top_right, bottom),
+            div_or_inf(top_left - top_right, bottom))
+
+    @property
+    def sink(self):
+        """
+        Find the fixed point that is the sink of the transformation.
+
+        The scaling factor determines which fixed point is the sink:
+
+        |k| > 1: the sink is the + root, the - root is the source
+        |k| < 1: the sink is the - root, the + root is the source
+        |k| = 1: (Parabolic case) The fixed point is both a source and sink.
+
+        (From Indra's Pearls, Note 3.5)
+        """
+        abs_k = abs(self.scaling_factor)
+        (fix_plus, fix_minus) = self.fixed_points
+
+        if fix_minus is None:
+            # Parabolic case, root is both source and sink
+            return fix_plus
+        elif abs_k > 1.0:
+            # Expanding case, the plus root is the sink
+            return fix_plus
+        else:
+            # Contracting case, the minus root is the sink
+            return fix_minus
+
+    @property
+    def source(self):
+        """
+        Get the opposite fixed point from Mobius.sink
+        """
+        abs_k = abs(self.scaling_factor)
+        (fix_plus, fix_minus) = self.fixed_points
+
+        if fix_minus is None:
+            # Parabolic case, root is both source and sink
+            return fix_plus
+        elif abs_k > 1.0:
+            # Expanding case, the minus root is the source
+            return fix_minus
+        else:
+            # Contracting case, the plus root is the source
+            return fix_plus
+        
+    @property
+    def scaling_factor(self):
+        """
+        Loxodromic/elliptic/hyperbolic mobius transformations are conjugate
+        to the map T(z) = kz
+
+        The formula for k is given as
+
+        ((Tr T + sqrt((Tr T)^2 - 4)) / 2)^2
+
+        From Indra's Pearls, Note 3.5
+        """
+        tr = self.tr
+
+        root = cmath.sqrt(tr ** 2 - 4)
+
+        return ((tr + root) / 2.0) ** 2
 
     def __mul__(self, other):
         """
